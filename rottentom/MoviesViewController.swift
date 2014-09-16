@@ -11,46 +11,27 @@ import UIKit
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var networkErrorLabel: UILabel!
     var movies: [NSDictionary] = []
             var activityView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     var HUD = JGProgressHUD(style: JGProgressHUDStyle.Light)
     var refreshControl:UIRefreshControl!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //self.tableView.addSubview(networkErrorLabel)
+        networkErrorLabel.text = "Network Error"
+        networkErrorLabel.backgroundColor = UIColor.grayColor()
+
+        networkErrorLabel.hidden = true
+    
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refersh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
-        
-        HUD.textLabel.text = "Loading.."
-        
-        HUD.showInView(self.view)
-        
-        HUD.dismissAfterDelay(2.0)
-        
-        let networkMon = AFNetworkReachabilityManager.sharedManager()
-        
-        networkMon.startMonitoring()
-        
-        networkMon.setReachabilityStatusChangeBlock {(status: AFNetworkReachabilityStatus?) in
-            switch status!.hashValue {
-            case AFNetworkReachabilityStatus.NotReachable.hashValue:
-                println("Network Error")
-            case AFNetworkReachabilityStatus.ReachableViaWiFi.hashValue:
-                println("Reachable via Wi-Fi")
-            default:
-                println("Reachable via LAN")
-            }
-        }
-        
-        //activityView.center = self.view.center
-        
-        //activityView.startAnimating()
-        
-        //self.view.addSubview(activityView)
-        
         
         tableView.backgroundColor = UIColor.blackColor()
         tableView.tintColor = UIColor.whiteColor()
@@ -58,31 +39,44 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         tableView.delegate = self
         tableView.dataSource = self
+        
+        getMovies(self)
 
+    }
+    
+    func getMovies(sender: AnyObject)
+    {
+        
+        HUD.textLabel.text = "Loading.."
+        
+        HUD.showInView(self.view)
+        
         let MyApiKey = "he99jj5xwj7mr2pwsf237nuf"
         let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + MyApiKey
-        
-        //let request = NSMutableURLRequest(URL: NSURL.URLWithString(RottenTomatoesURLString))
-        
-        //NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
-         //   var errorValue: NSError? = nil
-        //    let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
         
             
             let request = NSMutableURLRequest(URL: NSURL.URLWithString(RottenTomatoesURLString))
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
                 var errorValue: NSError? = nil
+                if(error != nil) {
+                    println("network error")
+                    self.networkErrorLabel.hidden = false
+                }
+                else{
+                    println("hello")
+                    self.networkErrorLabel.hidden = true
+                    //self.getMovies(self)
+                
                 let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
-           
+
              //println("dictionary: \(dictionary)")
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
-
+                }
         })
-        // self.movies = [["title" : "abc", "synopsis" : "test1"]] // for testing
+         //self.movies = [["title" : "abc", "synopsis" : "test1"]] // for testing
         
-    
-        
+        HUD.dismiss()
         
     }
 
@@ -93,6 +87,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func refresh(sender:AnyObject)
     {
+        getMovies(self)
         self.tableView.reloadData()
         self.refreshControl.endRefreshing()
     }
@@ -120,14 +115,21 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.movieTitleLabel.textColor = UIColor.whiteColor()
         
         cell.movieTitleLabel.text = movie["title"] as? String
+ 
+        var movieRating = movie["mpaa_rating"] as? String
+        var movieSyn = movie["synopsis"] as? String
+
+        var finalSyn = movieRating! + " " + movieSyn!
         
         cell.movieSynopsisLabel.textColor = UIColor.whiteColor()
-        cell.movieSynopsisLabel.text = movie["synopsis"] as? String
+        
+        cell.movieSynopsisLabel.text = finalSyn // = movie["synopsis"] as? String
 
         var posters = movie["posters"] as NSDictionary
         var posterUrl = posters["thumbnail"] as String
+        var proUrl = posterUrl.stringByReplacingOccurrencesOfString("tmb", withString: "pro", options: NSStringCompareOptions.LiteralSearch, range: nil)
         
-        cell.posterView.setImageWithURL(NSURL(string: posterUrl))
+        cell.posterView.setImageWithURL(NSURL(string: proUrl))
         
         return cell
     }
