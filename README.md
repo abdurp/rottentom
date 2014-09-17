@@ -27,7 +27,9 @@ Acknowledgements:
  - AFNetworking
  - JGProgessHUD
 
-
-GIF: RottenTomatoesGIF-AbdurR.gif
-![RottenTomatoesGIF-AbdurR.gif](https://github.com/abdurp/rottentom/blob/master/RottenTomatoesGIF-AbdurR.gif)
 (GIF created using LiceCap)
+
+
+
+![RottenTomatoesGIF-AbdurR.gif](https://github.com/abdurp/rottentom/blob/master/RottenTomatoesGIF-AbdurR.gif)
+
