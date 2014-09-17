@@ -10,10 +10,22 @@ Completed:
  - Required: User sees loading state while waiting for movies API. (Used JGProgressHUD)
  - Required: User sees error message when there's a networking error. (Used UILabel)
  - Required: User can pull to refresh the movie list. (USed UIRefreshControl)
+ 
+ - Optional: None yet
 
 Notes:
  - UI still needs some work
  - Tried using AFNeworkReachabilityManager earlier to detect network status changes, but decided against it.
+
+Project Description:
+ This project read a list of movies from RottenTomatoes and displays the details about each movie (title, poster, year, rating, synopsis).
+
+Installation:
+ - Build and deploy on the XCode6 GM (iPhone 5S)
+
+Acknowledgements:
+ - AFNetworking
+ - JGProgessHUD
 
 GIF: RottenTomatoesGIF-AbdurR.gif
 (GIF created using LiceCap)
