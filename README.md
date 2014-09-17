@@ -29,5 +29,5 @@ Acknowledgements:
 
 
 GIF: RottenTomatoesGIF-AbdurR.gif
-![RottenTomatoesGIF-AbdurR.gif](abdurp.github.com/rottentom/RottenTomatoesGIF-AbdurR.gif)
+![RottenTomatoesGIF-AbdurR.gif](https://github.com/abdurp/rottentom/blob/master/RottenTomatoesGIF-AbdurR.gif)
 (GIF created using LiceCap)
