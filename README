@@ -11,3 +11,9 @@ Completed:
  - Required: User sees error message when there's a networking error. (Used UILabel)
  - Required: User can pull to refresh the movie list. (USed UIRefreshControl)
 
+Notes:
+ - UI still needs some work
+ - Tried using AFNeworkReachabilityManager earlier to detect network status changes, but decided against it.
+
+GIF: RottenTomatoesGIF-AbdurR.gif
+(GIF created using LiceCap)
