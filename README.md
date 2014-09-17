@@ -1,4 +1,5 @@
 Assignment 1: RottenTomatoes Box Office Demo
+
 Developer: Abdur Rehman
 
 Time Spent: 10 hours in total
@@ -18,6 +19,7 @@ Notes:
  - Tried using AFNeworkReachabilityManager earlier to detect network status changes, but decided against it.
 
 Project Description:
+
  This project read a list of movies from RottenTomatoes and displays the details about each movie (title, poster, year, rating, synopsis).
 
 Installation:
